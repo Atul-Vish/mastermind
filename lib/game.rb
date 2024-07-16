@@ -1,12 +1,11 @@
 # Create our board and initialize Players
 class Game
+  attr_accessor :current_player_id, :code
+
   def initialize(player_1_class, player_2_class)
     @players = [player_1_class.new(self), player_2_class.new(self)]
     @current_player_id = 0
-  end
-
-  def current_player_id
-    @current_player_id
+    @code = Array.new(4) # Length of code is 4
   end
 
   def opponent_player_id
@@ -19,5 +18,18 @@ class Game
 
   def opponent_player
     @players[opponent_player_id]
+  end
+
+  # This method is included in the Player class to allow both Human and Computer to create code
+  def create_code
+    index = 0
+    while index < 4
+      select_peg = current_player.pegs.sample
+      code[index] = select_peg
+
+      index += 1
+    end
+
+    code
   end
 end

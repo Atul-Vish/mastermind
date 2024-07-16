@@ -7,5 +7,5 @@ game = Game.new(HumanPlayer, ComputerPlayer)
 atul = Player.new(game)
 p atul.create_code
 
-guddu = HumanPlayer.new(game)
-p guddu.guess_code
+# guddu = HumanPlayer.new(game)
+# p guddu.guess_code
