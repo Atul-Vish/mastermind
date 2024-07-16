@@ -20,6 +20,10 @@ class Game
     @players[opponent_player_id]
   end
 
+  def switch_players
+    @current_player_id = opponent_player_id
+  end
+
   # This method is included in the Player class to allow both Human and Computer to create code
   def create_code
     index = 0
@@ -31,5 +35,25 @@ class Game
     end
 
     code
+  end
+
+  def provide_feedback_on_guess(guess)
+    red_peg = 0
+    white_peg = 0
+    # Code : Red, Green, Yellow, Blue
+    # Guess : Red, Orange, Orange, Orange
+    code.each_with_index do |val, index_of_code|
+      guess.each_with_index do |value, index_of_guess|
+        if index_of_code == index_of_guess && val == value
+          red_peg += 1
+        elsif index_of_code != index_of_guess && val == value
+          white_peg += 1
+          break
+        end
+      end
+    end
+
+    puts "Red peg: #{red_peg}"
+    puts "White peg: #{white_peg}"
   end
 end
