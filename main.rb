@@ -1,8 +1,8 @@
-require_relative 'lib/game'
-require_relative 'lib/human-player'
-require_relative 'lib/player'
-require_relative 'lib/computer-player'
+require_relative "lib/game"
+require_relative "lib/human_player"
+require_relative "lib/player"
+require_relative "lib/computer_player"
 
 game = Game.new(HumanPlayer, ComputerPlayer)
-puts game.current_player
-puts game.opponent_player
+atul = Player.new(game)
+p atul.create_code

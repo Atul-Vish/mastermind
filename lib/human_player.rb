@@ -1,4 +1,4 @@
-require_relative 'player'
+require_relative "player"
 
 # Inherits from our Base Class
 class HumanPlayer < Player
