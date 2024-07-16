@@ -1,14 +1,13 @@
 # Player should know which game he's playing
 class Player
+  attr_accessor :pegs
+
   def initialize(game)
     @game = game
     @pegs = %w[Red Green Blue Yellow Orange Black]
   end
 
-  def pegs
-    @pegs
-  end
-
+  # This method is included in the Player class to allow both Human and Computer to create code
   def create_code
     code = Array.new(4) # Length of code is 4
     index = 0
