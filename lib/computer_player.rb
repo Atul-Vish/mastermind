@@ -10,7 +10,7 @@ class ComputerPlayer < Player
       guess.each_with_index do |index_of_guess, value|
         if index_of_code == index_of_guess && val == value
           red_peg += 1
-        elsif index_of_code != index_of_guess && val = value
+        elsif index_of_code != index_of_guess && val == value
           white_peg += 1
         end
       end

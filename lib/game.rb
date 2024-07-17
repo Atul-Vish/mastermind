@@ -42,18 +42,23 @@ class Game
     white_peg = 0
     # Code : Red, Green, Yellow, Blue
     # Guess : Red, Orange, Orange, Orange
-    code.each_with_index do |val, index_of_code|
-      guess.each_with_index do |value, index_of_guess|
-        if index_of_code == index_of_guess && val == value
-          red_peg += 1
-        elsif index_of_code != index_of_guess && val == value
-          white_peg += 1
-          break
-        end
+    index = 0
+    while index < 4
+      if code[index] == guess[index]
+        red_peg += 1
+      elsif guess.include?(code[index])
+        white_peg += 1
+        guess.delete_at(guess.index(code[index]))
       end
+
+      index += 1
     end
 
     puts "Red peg: #{red_peg}"
     puts "White peg: #{white_peg}"
+  end
+
+  def won?(guess)
+    code.eql?(guess)
   end
 end
