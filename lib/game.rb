@@ -40,8 +40,6 @@ class Game
   def provide_feedback_on_guess(guess)
     red_peg = 0
     white_peg = 0
-    # Code : Red, Green, Yellow, Blue
-    # Guess : Red, Orange, Orange, Orange
     index = 0
     while index < 4
       if code[index] == guess[index]
@@ -50,7 +48,6 @@ class Game
         white_peg += 1
         guess.delete_at(guess.index(code[index]))
       end
-
       index += 1
     end
 
@@ -58,7 +55,28 @@ class Game
     puts "White peg: #{white_peg}"
   end
 
-  def won?(guess)
+  def player_has_won?(guess)
     code.eql?(guess)
+  end
+
+  def play
+    create_code
+    switch_players
+    index = 0
+    while index < 8
+      guess = current_player.guess_code
+      if player_has_won?(guess)
+        puts "#{current_player} has won!! The code was #{code}"
+        return
+      else
+        provide_feedback_on_guess(guess)
+        puts "#{7-index} tries left!!"
+      end
+      switch_players
+      switch_players
+      index += 1
+    end
+
+    puts "You lost the game!! The code was #{code}"
   end
 end
