@@ -33,27 +33,65 @@ class Game
 
       index += 1
     end
-
     code
+    switch_players
   end
 
-  def provide_feedback_on_guess(guess)
-    red_peg = 0
-    white_peg = 0
+  def small_red_peg(player_guess)
+    small_red_peg = 0
     index = 0
     while index < 4
-      if code[index] == guess[index]
-        red_peg += 1
-      elsif guess.include?(code[index])
-        white_peg += 1
-        guess.delete_at(guess.index(code[index]))
+      if code[index] == player_guess[index]
+        small_red_peg += 1
       end
       index += 1
     end
+    small_red_peg
+  end
+
+  def small_white_peg(player_guess)
+    small_white_peg = 0
+    index = 0
+    while index < 4
+      if player_guess.include?(code[index])
+        small_white_peg += 1
+        player_guess.delete_at(player_guess.index(code[index]))
+      end
+      index += 1
+    end
+    small_white_peg
+  end
+
+  def feedback_on_player_guess(guess)
+    red_peg = small_red_peg(guess)
+    white_peg = small_white_peg(guess)
 
     puts "Red peg: #{red_peg}"
     puts "White peg: #{white_peg}"
   end
+
+  # This method is doing three things
+  # 1. Providing details about red_peg
+  # 2. Providing details about white_peg
+  # 3. Printing the message
+  # Let's separate these three things into their own methods
+  # def provide_feedback_on_guess(guess)
+  #   red_peg = 0
+  #   white_peg = 0
+  #   index = 0
+  #   while index < 4
+  #     if code[index] == guess[index]
+  #       red_peg += 1
+  #     elsif guess.include?(code[index])
+  #       white_peg += 1
+  #       guess.delete_at(guess.index(code[index]))
+  #     end
+  #     index += 1
+  #   end
+
+  #   puts "Red peg: #{red_peg}"
+  #   puts "White peg: #{white_peg}"
+  # end
 
   def player_has_won?(guess)
     code.eql?(guess)
@@ -61,7 +99,6 @@ class Game
 
   def play
     create_code
-    switch_players
     index = 0
     while index < 8
       guess = current_player.guess_code
@@ -69,8 +106,8 @@ class Game
         puts "#{current_player} has won!! The code was #{code}"
         return
       else
-        provide_feedback_on_guess(guess)
-        puts "#{7-index} tries left!!"
+        feedback_on_player_guess(guess)
+        puts "#{7 - index} tries left!!"
       end
       switch_players
       switch_players
