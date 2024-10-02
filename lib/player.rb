@@ -1,6 +1,9 @@
 class Player
+	attr_reader :pegs
+
 	def initialize(game)
 		@game = game
+		@pegs = ["Red", "Blue", "Green", "Yellow", "Orange", "Brown"]
 	end
 
 	def choose_color

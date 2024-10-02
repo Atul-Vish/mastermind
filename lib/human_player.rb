@@ -15,6 +15,7 @@ class HumanPlayer < Player
 	def feedback
 	end
 
-	def guess
+	def guess_code
+		
 	end
 end
