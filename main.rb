@@ -13,10 +13,13 @@ puts game.opponent_player_id
 com = ComputerPlayer.new(game)
 p com.create_code
 
-puts "------------------------------------------------------------------------"
+puts '------------------------------------------------------------------------'
 puts game.code
 
-
+# HumanPlayer guess_code method testing
+puts "---------------------------------------------------------------------------"
+human = HumanPlayer.new(game)
+p human.guess_code
 
 # Pseudocode
 # 1. ComputerPlayer creates code (Done)
