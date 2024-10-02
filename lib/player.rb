@@ -1,6 +1,4 @@
 class Player
-	attr_accessor :feedback
-
 	def initialize(game)
 		@game = game
 	end
