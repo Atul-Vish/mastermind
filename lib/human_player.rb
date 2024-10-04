@@ -16,11 +16,19 @@ class HumanPlayer < Player
   def guess_code
 		# 1. Provide some basic info about how to make a guess
     choose_color
-		# 2. When Player has entered a guess, convert it into integer array
+		# 2. When Player has enters a guess, convert it into integer array
+    # "1 2 3 4" => [1, 2, 3, 4]
     guess = gets.chomp.split.map { |val| val.to_i }
 		# 3. From integer array convert it into the form : ["Red", "Blue", "Green", "Yellow"]
+    # [1, 2, 3, 4] => ["Red", "Blue", "Green", "Yellow"]
     pegs_avail_choices = self.pegs
-    puts pegs_avail_choices
-		# 4. Return this guess
+    # 4. Iterate over guess array and for each number replace it with its corresponding peg
+    selection = guess.each_with_index do |value, index|
+      num = value
+      guess[index] = pegs_avail_choices[num]
+    end
+
+    # 5. Return this guess
+    return selection
 	end
 end
