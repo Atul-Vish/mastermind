@@ -31,4 +31,16 @@ class Game
     # 2. Place player guess on a board at a specific position
     board[try_no - 1] = guess
   end
+
+  def player_has_won?(guess)
+    guess == code
+  end
+
+  def winning_message(guess)
+    puts "Congrats!! You won the game."
+  end
+
+  def losing_message(guess)
+    puts "You lost the game!!"
+  end
 end
