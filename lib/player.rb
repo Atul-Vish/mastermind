@@ -1,3 +1,4 @@
+# Create a Player for our Game
 class Player
   attr_reader :pegs
 

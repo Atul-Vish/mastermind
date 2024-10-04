@@ -1,5 +1,5 @@
 class Game
-  attr_accessor :feedback, :code
+  attr_accessor :feedback, :code, :board
 
   def initialize(player_1_class, player_2_class)
     @players = [player_1_class.new(self), player_2_class.new(self)]
@@ -23,5 +23,12 @@ class Game
 
   def opponent_player
     @players[opponent_player_id]
+  end
+
+  def place_player_guess(player, try_no)
+    # 1. Call player 'guess_code' method and store the guess in a variable
+    guess = player.guess_code
+    # 2. Place player guess on a board at a specific position
+    board[try_no - 1] = guess
   end
 end
