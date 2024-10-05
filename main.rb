@@ -5,7 +5,6 @@ require_relative 'lib/computer_player'
 
 game = Game.new(HumanPlayer, ComputerPlayer)
 
-
 # Pseudocode
 # 1. ComputerPlayer creates code (Done)
 # 2. FOR i = 1 to 12

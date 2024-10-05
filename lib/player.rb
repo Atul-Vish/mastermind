@@ -1,10 +1,11 @@
 # Create a Player for our Game
 class Player
-  attr_reader :pegs
+  attr_reader :pegs, :feedback
 
   def initialize(game)
     @game = game
     @pegs = %w[Empty Red Blue Green Yellow Orange Brown]
+    @feeback = Array.new(2)
   end
 
   def choose_color
