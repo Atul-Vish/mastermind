@@ -86,8 +86,15 @@ class ComputerPlayer < Player
     guess_hash.each_key do |key|
       next unless code_hash.key?(key)
 
+      max_peg_count = 0
       # { Red => {:max_peg_count => 2} }
-      max_peg_count = code_hash[key]
+      if code_hash[key] > guess_hash[key]
+        max_peg_count = guess_hash[key]
+      elsif code_hash[key] < guess_hash[key]
+        max_peg_count = code_hash[key]
+      else
+        max_peg_count = code_hash[key]
+      end
       max_peg_count_hash[key][:max_peg_count] = max_peg_count
       max_peg_count_hash[key][:small_red_peg] = 0
       max_peg_count_hash[key][:small_white_peg] = 0
@@ -113,5 +120,13 @@ class ComputerPlayer < Player
     end
 
     small_red_peg_hash
+  end
+
+  def small_white_peg(small_red_peg_hash)
+    small_red_peg_hash.each_key do |key|
+      max_peg = small_red_peg_hash[key][:max_peg_count]
+      red_peg = small_red_peg_hash[key][:small_red_peg]
+      small_red_peg_hash[key][:small_white_peg] = max_peg - red_peg
+    end
   end
 end
