@@ -39,21 +39,13 @@ class ComputerPlayer < Player
     # 5. Add all the individual small_red_peg count to get the total small_red_peg
   end
 
-  def small_red_peg(guess)
-    small_red_peg = 0
-    # 1. Store the code in a variable
-    code = @game.code
-    # 2. Check guess against code
-    guess.each_with_index do |value, index|
-      # 3. If corresponding peg is same in guess and code then increment the small_red_peg count by 1
-      small_red_peg += 1 if value == code[index]
+  def total_red_peg(feedback_hash)
+    tot_red_peg = 0
+    feedback_hash.each_key do |key|
+      tot_red_peg = tot_red_peg + feedback_hash[key][:small_red_peg]
     end
-    # 4. Return small_red_peg count
-    small_red_peg
-  end
 
-  def small_white_peg(guess)
-    small_white_peg = 0
+    tot_red_peg
   end
 
   def correct_pegs_details(guess)
