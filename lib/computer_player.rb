@@ -101,4 +101,17 @@ class ComputerPlayer < Player
     # max_peg count will always be equal to code_hash peg value
     # Return this new hash
   end
+
+  def small_red_peg(guess, max_peg_count_hash)
+    # 1. If corresponding guess and code pegs are same THEN
+    # 2. For that peg 'key' in max_peg_count_hash increase the small_red_peg count by 1
+    small_red_peg_hash = max_peg_count_hash
+    for i in 0..3
+      if guess[i] == @game.code[i]
+        small_red_peg_hash[guess[i]][:small_red_peg] += 1
+      end
+    end
+
+    small_red_peg_hash
+  end
 end

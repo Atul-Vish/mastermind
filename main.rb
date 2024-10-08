@@ -5,10 +5,12 @@ require_relative 'lib/computer_player'
 
 game = Game.new(HumanPlayer, ComputerPlayer)
 game.code = ["Red", "Blue", "Green", "Red"]
-guess = ["Red", "Red", "Blue", "Yellow"]
+guess = ["Red", "Red", "Green", "Yellow"]
 
 computer = ComputerPlayer.new(game)
-p computer.max_peg_count(guess)
+max_peg_hash = computer.max_peg_count(guess)
+p max_peg_hash
+p computer.small_red_peg(guess, max_peg_hash)
 # Pseudocode
 # 1. ComputerPlayer creates code (Done)
 # 2. FOR i = 1 to 12
