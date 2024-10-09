@@ -7,7 +7,6 @@ class ComputerPlayer < Player
     super(game)
   end
 
-
   def create_code
     # 1. Get the available choices of pegs
     avail_choices = pegs
@@ -43,9 +42,9 @@ class ComputerPlayer < Player
   def max_peg_count(guess)
     # Convert guess and code into hash
     guess_hash = convert_to_hash(guess)
-    code_hash = convert_to_hash(@game.code)
+    code_hash = convert_to_hash(game.code)
     # For each key in guess_hash check if code_hash also contains that key
-    max_peg_count_hash = create_nested_infinite_hash
+    feedback_hash = create_nested_infinite_hash
     guess_hash.each_key do |peg|
       next unless code_hash.key?(peg)
 
@@ -54,12 +53,12 @@ class ComputerPlayer < Player
       is_true = code_hash[peg] > guess_hash[peg]
       max_peg_count = is_true ? guess_hash[peg] : code_hash[peg]
 
-      max_peg_count_hash[peg][:max_peg_count] = max_peg_count
-      max_peg_count_hash[peg][:small_red_peg] = 0
-      max_peg_count_hash[peg][:small_white_peg] = 0
+      feedback_hash[peg][:max_peg_count] = max_peg_count
+      feedback_hash[peg][:small_red_peg] = 0
+      feedback_hash[peg][:small_white_peg] = 0
     end
 
-    max_peg_count_hash
+    feedback_hash
   end
 
   # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
@@ -72,33 +71,27 @@ class ComputerPlayer < Player
     hash = Hash.new { |h,k| h[k] = h.dup.clear }
   end
 
-  def small_red_peg(guess, max_peg_count_hash)
-    # 1. If corresponding guess and code pegs are same THEN
-    # 2. For that peg 'key' in max_peg_count_hash increase the small_red_peg count by 1
-    for i in 0..3
-      guess_peg = guess[i]
-      code_peg = game.code[i]
-      
-      if guess_peg == code_peg
-        max_peg_count_hash[guess_peg][:small_red_peg] += 1
-      end
+  def small_red_peg(guess, feedback_hash)
+    # Check corresponding peg in code and guess and if they are same THEN increase the small_red_peg count for that peg by 1
+    guess.each_with_index do |peg, index|
+      feedback_hash[peg][:small_red_peg] += 1 if peg == game.code[index]
     end
 
-    max_peg_count_hash
+    feedback_hash
   end
 
-  def small_white_peg(small_red_peg_hash)
-    small_red_peg_hash.each_key do |key|
-      max_peg = small_red_peg_hash[key][:max_peg_count]
-      red_peg = small_red_peg_hash[key][:small_red_peg]
-      small_red_peg_hash[key][:small_white_peg] = max_peg - red_peg
+  def small_white_peg(feedback_hash)
+    feedback_hash.each_key do |peg|
+      max_peg = feedback_hash[peg][:max_peg_count]
+      red_peg = feedback_hash[peg][:small_red_peg]
+      feedback_hash[peg][:small_white_peg] = max_peg - red_peg
     end
   end
 
   def total_red_peg(feedback_hash)
     tot_red_peg = 0
     feedback_hash.each_key do |key|
-      tot_red_peg = tot_red_peg + feedback_hash[key][:small_red_peg]
+      tot_red_peg += feedback_hash[key][:small_red_peg]
     end
 
     tot_red_peg
@@ -106,8 +99,8 @@ class ComputerPlayer < Player
 
   def total_white_peg(feedback_hash)
     tot_white_peg = 0
-    feedback_hash.each_key do |key|
-      tot_white_peg = tot_white_peg + feedback_hash[key][:small_white_peg]
+    feedback_hash.each_key do |peg|
+      tot_white_peg += feedback_hash[peg][:small_white_peg]
     end
 
     tot_white_peg
@@ -124,5 +117,17 @@ class ComputerPlayer < Player
 
   def to_s
     'Computer'
+  end
+
+  def get_max_peg_count(feeback_hash)
+    
+  end
+
+  def get_small_red_peg(feedback_hash)
+    
+  end
+
+  def get_small_white_peg(feedback_hash)
+    
   end
 end
