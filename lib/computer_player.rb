@@ -1,5 +1,5 @@
 require_relative 'player'
-
+# Creates ComputerPlayer to play against 'YOU'
 class ComputerPlayer < Player
   attr_accessor :game
 
@@ -7,52 +7,92 @@ class ComputerPlayer < Player
     super(game)
   end
 
-  def to_s
-    'Computer'
-  end
 
   def create_code
-    # 1. Get the pegs array
-    choices = pegs
-    # 2. Code length is 4, so initialize an array for code
+    # 1. Get the available choices of pegs
+    avail_choices = pegs
+    # 2. Store the empty code array in 'code'
     code = game.code
     i = 0
     # 3. Loop through pegs and for each iteration select a random value and assign it to the code[i]
     while i < 4
-      random = choices.sample
-      code[i] = random
+      random_peg = choices.sample
+      code[i] = random_peg
       i += 1
     end
   end
-
-  def feedback; end
-
-  def guess; end
 
   # Provide feeback on your guess
   def feedback(guess)
     feedback = Array.new(2)
     # 1. Calculate max_peg count for a peg
     max_peg_hash = max_peg_count(guess)
+    # 2. Then calculate small_red_peg for this peg
     small_red_peg_hash = small_red_peg(guess,max_peg_hash)
+    # 3. Subtract small_red_peg of a peg from max_peg_count
     feedback_hash = small_white_peg(small_red_peg_hash)
+     # 4. Add all the individual small_white_peg count to get the total small_white_peg
     total_red_peg = total_red_peg(feedback_hash)
+    # 5. Add all the individual small_red_peg count to get the total small_red_peg
     total_white_peg = total_white_peg(feedback_hash)
 
     feedback_array = [total_red_peg, total_white_peg]
-    # 2. Then calculate small_red_peg for this peg
-    # 3. Subtract small_red_peg of a peg from max_peg_count
-    # 4. Add all the individual small_white_peg count to get the total small_white_peg
-    # 5. Add all the individual small_red_peg count to get the total small_red_peg
   end
 
-  def print_feedback(guess)
-    array = feedback(guess)
-    red_pegs = array[0]
-    white_pegs = array[1]
+  # Calculate max_peg_count for a peg
+  def max_peg_count(guess)
+    # Convert guess and code into hash
+    guess_hash = convert_to_hash(guess)
+    code_hash = convert_to_hash(@game.code)
+    # For each key in guess_hash check if code_hash also contains that key
+    max_peg_count_hash = create_nested_infinite_hash
+    guess_hash.each_key do |peg|
+      next unless code_hash.key?(peg)
 
-    puts "Red pegs: #{red_pegs}"
-    puts "White pegs: #{white_pegs}"
+      # code_hash[peg] represents count of 'peg' in code. Example code = ["Red", "Blue", "Red", "Green"]
+      # code_hash["Red"] = 2
+      is_true = code_hash[peg] > guess_hash[peg]
+      max_peg_count = is_true ? guess_hash[peg] : code_hash[peg]
+
+      max_peg_count_hash[peg][:max_peg_count] = max_peg_count
+      max_peg_count_hash[peg][:small_red_peg] = 0
+      max_peg_count_hash[peg][:small_white_peg] = 0
+    end
+
+    max_peg_count_hash
+  end
+
+  # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
+  def convert_to_hash(array)
+    array.tally
+  end
+
+  # Creates nested hash with infinite depth
+  def create_nested_infinite_hash
+    hash = Hash.new { |h,k| h[k] = h.dup.clear }
+  end
+
+  def small_red_peg(guess, max_peg_count_hash)
+    # 1. If corresponding guess and code pegs are same THEN
+    # 2. For that peg 'key' in max_peg_count_hash increase the small_red_peg count by 1
+    for i in 0..3
+      guess_peg = guess[i]
+      code_peg = game.code[i]
+      
+      if guess_peg == code_peg
+        max_peg_count_hash[guess_peg][:small_red_peg] += 1
+      end
+    end
+
+    max_peg_count_hash
+  end
+
+  def small_white_peg(small_red_peg_hash)
+    small_red_peg_hash.each_key do |key|
+      max_peg = small_red_peg_hash[key][:max_peg_count]
+      red_peg = small_red_peg_hash[key][:small_red_peg]
+      small_red_peg_hash[key][:small_white_peg] = max_peg - red_peg
+    end
   end
 
   def total_red_peg(feedback_hash)
@@ -73,77 +113,16 @@ class ComputerPlayer < Player
     tot_white_peg
   end
 
-  def correct_pegs_details(guess)
-    # 1. Take guess and convert it into hash using tally
-    guess_hash = guess.tally
-    # 2. Do the same with code
-    code_hash = @code.tally
-    # 3. Compare guess and code to find out what pegs are correct and what should be their max_count
-    # Example guess_hash = { "Red" => 2, "Blue" => 1, "Yellow" => 1 }
-    # code_hash = { "Green" => 1, "Blue" => 1, "Red" => 1, "Brown" => 1 }
-    # 3.1 Check If code_hash contains "Red"
-    # 3.2 In this case it does contains "Red"
-    # 3.3 Then compare their peg_count as : guess_hash ("Red") > code_hash("Red")
-    # 3.4 Now, max_peg_count for "Red" will be 2 (same as code count 'always')
-    # Iterate over guess_hash and keep repeating the above steps
-    # 4. Add this 'max_peg_count' field to the hash and store this value
-    # 5. Add 'small_red_peg' and 'small_white_peg' fields too and initially intialize them to 0 for a peg
-    # 6. Return this hash
+  def print_feedback(guess)
+    array = feedback(guess)
+    red_pegs = array[0]
+    white_pegs = array[1]
+
+    puts "\tRed pegs: #{red_pegs}"
+    puts "\tWhite pegs: #{white_pegs}"
   end
 
-  # Calculate max_peg_count for a peg
-  def max_peg_count(guess)
-    max_peg_count = 0
-    # Convert guess into hash
-    guess_hash = guess.tally
-    # Convert code into hash
-    code_hash = @game.code.tally
-    # For each key in guess_hash check if code_hash also contains that key
-    max_peg_count_hash = Hash.new { |h, k| h[k] = h.dup.clear }
-    guess_hash.each_key do |key|
-      next unless code_hash.key?(key)
-
-      max_peg_count = 0
-      # { Red => {:max_peg_count => 2} }
-      if code_hash[key] > guess_hash[key]
-        max_peg_count = guess_hash[key]
-      elsif code_hash[key] < guess_hash[key]
-        max_peg_count = code_hash[key]
-      else
-        max_peg_count = code_hash[key]
-      end
-      max_peg_count_hash[key][:max_peg_count] = max_peg_count
-      max_peg_count_hash[key][:small_red_peg] = 0
-      max_peg_count_hash[key][:small_white_peg] = 0
-    end
-
-    max_peg_count_hash
-
-    # If code_hash also contains that key then compare that key value in code_hash and guess_hash
-    # Else move to next peg
-    # Initialize a new hash and set max_peg_count for every peg
-    # max_peg count will always be equal to code_hash peg value
-    # Return this new hash
-  end
-
-  def small_red_peg(guess, max_peg_count_hash)
-    # 1. If corresponding guess and code pegs are same THEN
-    # 2. For that peg 'key' in max_peg_count_hash increase the small_red_peg count by 1
-    small_red_peg_hash = max_peg_count_hash
-    for i in 0..3
-      if guess[i] == @game.code[i]
-        small_red_peg_hash[guess[i]][:small_red_peg] += 1
-      end
-    end
-
-    small_red_peg_hash
-  end
-
-  def small_white_peg(small_red_peg_hash)
-    small_red_peg_hash.each_key do |key|
-      max_peg = small_red_peg_hash[key][:max_peg_count]
-      red_peg = small_red_peg_hash[key][:small_red_peg]
-      small_red_peg_hash[key][:small_white_peg] = max_peg - red_peg
-    end
+  def to_s
+    'Computer'
   end
 end

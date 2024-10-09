@@ -36,11 +36,11 @@ class Game
     guess == code
   end
 
-  def winning_message(guess)
+  def winning_message
     puts "Congrats!! You won the game."
   end
 
-  def losing_message(guess)
+  def losing_message
     puts "You lost the game!!"
   end
 end
