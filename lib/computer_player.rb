@@ -33,10 +33,26 @@ class ComputerPlayer < Player
   def feedback(guess)
     feedback = Array.new(2)
     # 1. Calculate max_peg count for a peg
+    max_peg_hash = max_peg_count(guess)
+    small_red_peg_hash = small_red_peg(guess,max_peg_hash)
+    feedback_hash = small_white_peg(small_red_peg_hash)
+    total_red_peg = total_red_peg(feedback_hash)
+    total_white_peg = total_white_peg(feedback_hash)
+
+    feedback_array = [total_red_peg, total_white_peg]
     # 2. Then calculate small_red_peg for this peg
     # 3. Subtract small_red_peg of a peg from max_peg_count
     # 4. Add all the individual small_white_peg count to get the total small_white_peg
     # 5. Add all the individual small_red_peg count to get the total small_red_peg
+  end
+
+  def print_feedback(guess)
+    array = feedback(guess)
+    red_pegs = array[0]
+    white_pegs = array[1]
+
+    puts "Red pegs: #{red_pegs}"
+    puts "White pegs: #{white_pegs}"
   end
 
   def total_red_peg(feedback_hash)
@@ -46,6 +62,15 @@ class ComputerPlayer < Player
     end
 
     tot_red_peg
+  end
+
+  def total_white_peg(feedback_hash)
+    tot_white_peg = 0
+    feedback_hash.each_key do |key|
+      tot_white_peg = tot_white_peg + feedback_hash[key][:small_white_peg]
+    end
+
+    tot_white_peg
   end
 
   def correct_pegs_details(guess)
