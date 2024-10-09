@@ -1,5 +1,7 @@
+# Creates a game board and lets HumanPlayer and ComputerPlayer play against each other
 class Game
   attr_accessor :feedback, :code, :board
+  attr_reader :current_player_id
 
   def initialize(player_1_class, player_2_class)
     @players = [player_1_class.new(self), player_2_class.new(self)]
@@ -13,10 +15,6 @@ class Game
 
   def current_player
     @players[current_player_id]
-  end
-
-  def current_player_id
-    @current_player_id
   end
 
   def opponent_player
@@ -43,11 +41,11 @@ class Game
   end
 
   def winning_message
-    print_message("Congrats!! You won the game.")
+    "Congrats!! You won the game"
   end
 
   def losing_message
-    print_message("You lost the game!!")
+    "You lost the game!!"
   end
 
   def print_message(message)
@@ -64,12 +62,15 @@ class Game
     p code
 
     counter = 0
-    while (counter < 12)
+    while counter < 12
       switch_players!
       guess = current_player.guess_code
       p guess
+
+      try_or_tries = counter.zero? ? "try" : "tries"
       if player_has_won?(guess)
-        winning_message
+        message = winning_message + " in #{counter + 1} #{try_or_tries}"
+        print_message(message)
         break
       end
       switch_players!

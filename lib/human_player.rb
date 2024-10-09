@@ -1,10 +1,7 @@
 require_relative 'player'
 
+# Create a HumanPlayer which can either 'create code' or 'break code'
 class HumanPlayer < Player
-  # def initialize(game)
-  #   @game = game
-  # end
-
   def to_s
     'Human'
   end
@@ -19,7 +16,7 @@ class HumanPlayer < Player
 		# 2. When Player has enters a guess, convert it into integer array
     # "1 2 3 4" => [1, 2, 3, 4]
     guess = gets.chomp.split.map { |val| val.to_i }
-		# 3. From integer array convert it into the form : ["Red", "Blue", "Green", "Yellow"]
+	  # 3. From integer array convert it into the form : ["Red", "Blue", "Green", "Yellow"]
     # [1, 2, 3, 4] => ["Red", "Blue", "Green", "Yellow"]
     pegs_avail_choices = self.pegs
     # 4. Iterate over guess array and for each number replace it with its corresponding peg
@@ -30,5 +27,5 @@ class HumanPlayer < Player
 
     # 5. Return this guess
     selection
-	end
+  end
 end
