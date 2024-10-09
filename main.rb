@@ -3,13 +3,9 @@ require_relative 'lib/game'
 require_relative 'lib/human_player'
 require_relative 'lib/computer_player'
 
-game = Game.new(HumanPlayer, ComputerPlayer)
-game.code = ["Red", "Blue", "Green", "Red"]
-guess = ["Red", "Blue", "Green", "Red"]
+game = Game.new(ComputerPlayer, HumanPlayer)
+game.play
 
-computer = ComputerPlayer.new(game)
-
-puts computer.print_feedback(guess)
 # Pseudocode
 # 1. ComputerPlayer creates code (Done)
 # 2. FOR i = 1 to 12

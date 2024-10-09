@@ -11,18 +11,24 @@ class Game
     puts "#{current_player} goes first!!"
   end
 
-  attr_reader :current_player_id
-
   def current_player
     @players[current_player_id]
+  end
+
+  def current_player_id
+    @current_player_id
+  end
+
+  def opponent_player
+    @players[opponent_player_id]
   end
 
   def opponent_player_id
     1 - current_player_id
   end
 
-  def opponent_player
-    @players[opponent_player_id]
+  def switch_players!
+    @current_player_id = 1 - @current_player_id
   end
 
   def place_player_guess(player, try_no)
@@ -37,10 +43,41 @@ class Game
   end
 
   def winning_message
-    puts "Congrats!! You won the game."
+    print_message("Congrats!! You won the game.")
   end
 
   def losing_message
-    puts "You lost the game!!"
+    print_message("You lost the game!!")
+  end
+
+  def print_message(message)
+    puts message
+  end
+
+  def play
+    # 1. ComputerPlayer Create Code
+    # 2. HumanPlayer Get 12 tries to guess the code
+    # 3. If HumanPlayer is able to guess the code in 12 tries THEN
+    # 3.1   print "Congrats!! You won the game"
+    #   Else print "You lost the game!!"
+    current_player.create_code
+    p code
+
+    counter = 0
+    while (counter < 12)
+      switch_players!
+      guess = current_player.guess_code
+      p guess
+      if player_has_won?(guess)
+        winning_message
+        break
+      end
+      switch_players!
+      current_player.print_feedback(guess)
+
+      counter += 1
+    end
+
+    losing_message
   end
 end

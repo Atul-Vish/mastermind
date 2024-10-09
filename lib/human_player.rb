@@ -29,6 +29,6 @@ class HumanPlayer < Player
     end
 
     # 5. Return this guess
-    return selection
+    selection
 	end
 end

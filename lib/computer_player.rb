@@ -15,7 +15,7 @@ class ComputerPlayer < Player
     i = 0
     # 3. Loop through pegs and for each iteration select a random value and assign it to the code[i]
     while i < 4
-      random_peg = choices.sample
+      random_peg = avail_choices.sample
       code[i] = random_peg
       i += 1
     end
@@ -117,17 +117,5 @@ class ComputerPlayer < Player
 
   def to_s
     'Computer'
-  end
-
-  def get_max_peg_count(feeback_hash)
-    
-  end
-
-  def get_small_red_peg(feedback_hash)
-    
-  end
-
-  def get_small_white_peg(feedback_hash)
-    
   end
 end
