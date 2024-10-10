@@ -33,7 +33,7 @@ class Game
     # 1. Call player 'guess_code' method and store the guess in a variable
     guess = player.guess_code
     # 2. Place player guess on a board at a specific position
-    board[try_no - 1] = guess
+    board[try_no] = guess
   end
 
   def player_has_won?(guess)
@@ -64,7 +64,8 @@ class Game
     counter = 0
     while counter < 12
       switch_players!
-      guess = current_player.guess_code
+      place_player_guess(current_player, counter)
+      guess = board[counter]
       p guess
 
       try_or_tries = counter.zero? ? "try" : "tries"
@@ -80,5 +81,11 @@ class Game
     end
 
     losing_message
+  end
+
+  def print_board
+    board.each_with_index do |val, index|
+      puts "Your guess #{index + 1} was #{board[index]}" unless board[index].all? { |value| value.nil? }
+    end
   end
 end
