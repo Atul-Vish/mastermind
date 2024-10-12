@@ -2,6 +2,8 @@ require_relative 'player'
 
 # Create a HumanPlayer which can either 'create code' or 'break code'
 class HumanPlayer < Player
+  attr_accessor :game
+
   def to_s
     'Human'
   end
@@ -26,6 +28,7 @@ class HumanPlayer < Player
     end
 
     # 5. Return this guess
+    game.switch_players!
     selection
   end
 end

@@ -15,6 +15,8 @@ class ComputerPlayer < Player
       code[i] = random_peg
       i += 1
     end
+    game.switch_players!
+    code
   end
 
   # Provide feeback on your guess
@@ -55,16 +57,6 @@ class ComputerPlayer < Player
     feedback_hash
   end
 
-  # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
-  def convert_to_hash(array)
-    array.tally
-  end
-
-  # Creates nested hash with infinite depth
-  def create_nested_infinite_hash
-    Hash.new { |h, k| h[k] = h.dup.clear }
-  end
-
   def small_red_peg(guess, feedback_hash)
     # Check corresponding peg in code and guess and if they are same THEN
     #  increase the small_red_peg count for that peg by 1
@@ -101,14 +93,78 @@ class ComputerPlayer < Player
     tot_white_peg
   end
 
+  # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
+  def convert_to_hash(array)
+    array.tally
+  end
+
+  # Creates nested hash with infinite depth
+  def create_nested_infinite_hash
+    Hash.new { |h, k| h[k] = h.dup.clear }
+  end
+
   def print_feedback(guess)
     array = feedback(guess)
     red_pegs = array[0]
     white_pegs = array[1]
 
+    game.switch_players!
     puts "\tRed pegs: #{red_pegs}"
     puts "\tWhite pegs: #{white_pegs}"
     puts ""
+  end
+
+  # Implement Minimax algorithm for Computer to make guesses
+  def guess
+    # 3. Get feedback on your initial guess
+    # 4. If the feedback is all colored pegs then algorithm terminates (let's skip this for now)
+    # 5. Iterate over sample, considering each sample[i] as code and play '1122' against it
+    #     If feedback you get is same as (3) then include it otherwise remove sample[i] from set
+  end
+
+  # 1, Create set 'S' of all possible 1296 codes
+  def create_set_of_all_possible_codes
+    pegs.repeated_permutation(4).to_a
+  end
+
+  # 2. Select initial guess 1122 eq to [Red Red Blue Blue]
+  def select_initial_guess
+    %w[Red Red Blue Blue]
+  end
+
+  # 3. Get feedback on your guess from HumanPlayer
+  def take_feedback_on_guess
+    puts "Red Pegs: "
+    red_pegs = gets.chomp.to_i
+
+    puts "White Pegs: "
+    white_pegs = gets.chomp.to_i
+
+    [red_pegs, white_pegs]
+  end
+
+  # 5. Eliminating codes from sample that couldn't possibly be our answer (the real code)
+  def remove_codes_from_set(guess, set)
+    # 1. Iterate over set such that every element in set could be possible code
+    sample = set
+    recent_guess = guess
+    feedback_on_recent_guess = take_feedback_on_guess
+    sample.each do |possible_code|
+      feedback_on_possible_code = feedback(possible_code, recent_guess)
+
+      if feedback_on_possible_code == feedback_on_recent_guess
+        p feedback_on_possible_code
+        # set.delete(possible_code)
+      else
+        sample.delete(possible_code)
+      end
+    end
+
+    return sample
+    # 2. Against this code play your initial guess '1122' and you should get the same feedback if it was code
+    # 3. If you get the same feedback it means it can possibly be the answer so keep it
+    # 4. Otherwise remove it from the set if the feedback you got is different than what you got for '1122'
+    # 5. Return this new set after removing all values which can't possibly be our code
   end
 
   def to_s
