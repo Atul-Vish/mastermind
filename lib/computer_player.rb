@@ -122,13 +122,25 @@ class ComputerPlayer < Player
     # 5. Iterate over sample, considering each sample[i] as code and play '1122' against it
     #     If feedback you get is same as (3) then include it otherwise remove sample[i] from set
     initial_guess = select_initial_guess
+    p initial_guess
     feedback = feedback_on_guess
     sample = create_set_of_all_possible_codes
 
-    puts "------------------x------------------x----------------------x-----------------------x"
     sample_modified = remove_codes_from_sample(initial_guess, feedback, sample)
-    sample_modified.each { |val| p val }
-    # Code is fine upto this point
+    # 10 more guesses for Computer
+    counter = 0
+    while counter < 10
+      score_array = score_array(sample_modified)
+      guess =  guess_to_play_next(sample_modified, score_array)
+      p guess
+      feedback1 = feedback_on_guess
+      if feedback1 == [4, 0]
+        puts "You won the game in #{counter + 1} tries."
+        break
+      end
+      sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
+      counter += 1
+    end
   end
 
   # 1, Create set 'S' of all possible 1296 codes
@@ -156,19 +168,62 @@ class ComputerPlayer < Player
     [red_peg_feedback, white_peg_feedback]
   end
 
-  # 5. Eliminating codes from sample that couldn't possibly be our answer (the real code)
+  # 5. Eliminating codes from sample that couldn't possibly be our answer (the real code) TEST PASS
   def remove_codes_from_sample(guess, feedback_on_guess, sample)
     # 1. Iterate over set such that every element in set could be possible code
-    remove_from_sample = Array.new
+    modified_sample = Array.new
     sample.each do |possible_code|
       feedback_on_possible_code = feedback(guess, possible_code)
 
-      if feedback_on_possible_code == feedback_on_guess
-        remove_from_sample << possible_code
+      modified_sample << possible_code if feedback_on_possible_code == feedback_on_guess
+    end
+
+    modified_sample
+  end
+
+  # 1. Consider the first code in modified_sample as guess and other codes as codes
+  # and take feedback and group them
+  def feedback_hash_for_score(guess, set)
+    hash = Hash.new
+    set.each do |possible_code|
+      feedback = feedback(guess, possible_code)
+      # if possible_code == guess && set.size == 1
+      #   hash[feedback] = 0
+      # end
+
+      if hash.key?(feedback)
+        hash[feedback] += 1
+      elsif 
+        hash[feedback] = 1
       end
     end
 
-    remove_from_sample
+    hash
+  end
+
+  # 2. Assign score to the guess
+  def assign_score(hash)
+    hash.values.max
+  end
+
+  # Return the score array
+  def score_array(set)
+    score_array = Array.new(set.size)
+    set.each_with_index do |code, index|
+      feedback_hash = feedback_hash_for_score(code, set)
+      max_value = feedback_hash.values.max
+      score = set.size - max_value
+      score_array[index] = score
+    end
+
+    score_array
+  end
+
+  def guess_to_play_next(set, score_array)
+    max_score = score_array.max
+    index = score_array.find_index(max_score)
+
+    set[index]
   end
 
   def to_s

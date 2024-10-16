@@ -18,8 +18,8 @@ class Game
   # I will extract some functionality as 'methods' and make those methods private
   # Then I'll call those methods in play method
   def play
-    current_player.create_code
-    p code
+    code = current_player.create_code
+    # p code
     guess_no = 0
     while guess_no < 12
       switch_players!
@@ -111,7 +111,7 @@ class Game
   end
 
   def lose_message
-    "You are out of tries!! Better luck next time."
+    "You are out of tries!! Better luck next time. The code was #{code}"
   end
 
   # Test Pass
