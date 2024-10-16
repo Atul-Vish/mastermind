@@ -28,7 +28,6 @@ class HumanPlayer < Player
     end
 
     # 5. Return this guess
-    game.switch_players!
     selection
   end
 end

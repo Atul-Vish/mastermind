@@ -4,8 +4,16 @@ require_relative 'lib/human_player'
 require_relative 'lib/computer_player'
 
 game = Game.new(ComputerPlayer, HumanPlayer)
-game.play
+# game.play
 
+computer = ComputerPlayer.new(game)
+binding.pry
+guess = ["Red", "Red", "Blue", "Blue"]
+feedback_on_guess = [1,1]
+sample = ["Red", "Blue", "Green", "Yellow", "Orange", "Brown"].repeated_permutation(4).to_a
+sample_modified = computer.remove_codes_from_sample(guess, feedback_on_guess, sample)
+
+sample_modified.each { |possible_code| p possible_code }
 # permutations = computer.create_set_of_all_possible_codes
 
 # set = computer.create_set_of_all_possible_codes
