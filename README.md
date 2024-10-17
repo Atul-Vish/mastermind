@@ -37,3 +37,19 @@ To Play the mastermind :
 4. Enter `1` if you want to guess the **code** created by the `ComputerPlayer`
 5. Enter `2` if you want the `ComputerPlayer` to guess your secret **code**
 6. ***KEEP REPEATING AND HAVE FUN!!***
+
+## Problems that I Faced
+
+1. Implementing the functionality for `white feedback peg` was difficult. For `red feedback peg` it was way easier, just check the corresponding pegs in both `code` and `guess` and if they are same then increment a **counter** variable for it. I ended up using `red peg feedback` data and method `max_peg_count` to indirectly get get the `white feedback data`.
+
+2. Whle implementing **Knuth's Mastermind Algorithm** to remove **codes** from the `set` of all possible **1296** codes, I was using `each` method on `set` while simultaneously updating my `set` which led to my possible codes leakage.
+
+## Lessons Learned
+
+1. Always write **pseudocode** first. It saves time and helps to find fault in your logic. You may have a strong temptation to just write the code directly but refrain from doing so. Write **pseudocode** and verify it against some examples. Once you have done that you can be sure that whatever error comes now is an *implementation problem*.
+
+2. Don't think about **refactoring** and writing new piece of functionality together. Focus on one thing at a time.
+
+3. Always create a functionality outline via **functions** only then begin to fill those functions. The other way around is too confusing for me. Writing individual functions first and then thinking about how to piece them together to achieve the desired functionality wastes too much time and it doesn't give a good feel of `data flow`.
+
+4. *Tests are awesome*. Everytime I wrote a functionality, I feared that it might break something. I had to check if everything was working manually which took too much time. So why didn't I write tests?? I haven't studied them in `Ruby` yet but had prior exposure to them in `Java`. 
