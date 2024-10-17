@@ -8,7 +8,7 @@
 6. If you can't guess the code in `11` tries you lose the game and the game will end with a losing message.
 7. If you choose to be the **code creator**, then write your code on a piece of paper.
 8. `ComputerPlayer` will start guessing your code and everytime **Computer** makes a guess, look at your **code**(where you wrote it in step 7) and provide feedback.
-9. `ComputerPlayer` will work under the assumption that you always provide correct feedback.
+9. `ComputerPlayer` will work under the assumption that you'll always provide correct feedback.
 10. `ComputerPlayer` will always win and will be able to guess the code in atmost 5 tries. Provided that the feedback you provide is correct.
 11. It uses **Knuth's** algorithm to guess it in atmost 5 tries. More details on the algortihm are [here](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Best_strategies_with_four_holes_and_six_colors)
 
@@ -16,4 +16,24 @@
 
 [Click to know about How to Play Mastermind](https://www.wikihow.com/Play-Mastermind)
 
+## Code Creator
+
 ![Code Creator](https://github.com/Atul-Vish/mastermind/blob/main/media/code_creator.gif)
+
+If you want to be the **code creator** then press `2`. Write your code on paper and every time `ComputerPlayer` make a **guess** look at your **code** and provide feedback. Take some time but do provide *correct feedback*. In the above `GIF` I created the code *["Red", "Blue", "Green", "Yellow"]*. I kept on providing feedback to Computer based on this code and the ComputerPlayer was able to guess the original code in **4** tries.
+
+## Code Breaker
+
+![Code Breaker](https://github.com/Atul-Vish/mastermind/blob/main/media/code_guess.gif)
+
+If you want to be the **code breaker** then press `1`. Provide the guess in the format specified in the above peg.
+
+## Play the Game
+
+To Play the mastermind : 
+1. [Go to this link](https://replit.com/@atulvishwakarm6/mastermind).
+2. `Click` the green **Run** button.
+3. You'll be prompted to choose between `code creator` or `code breaker`
+4. Enter `1` if you want to guess the **code** created by the `ComputerPlayer`
+5. Enter `2` if you want the `ComputerPlayer` to guess your secret **code**
+6. ***KEEP REPEATING AND HAVE FUN!!***
