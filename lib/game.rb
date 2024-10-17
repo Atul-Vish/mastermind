@@ -39,6 +39,15 @@ class Game
     print_board
   end
 
+  def select_your_role
+    print_message("Select your role: ")
+    print_message("1) Code Breaker")
+    print_message("2) Code Creator")
+    print_message("")
+
+    role = gets.chomp.to_i
+  end
+
   def print_board
     board.each_with_index do |val, index|
       puts "Your guess #{index + 1} was: #{board[index]}" unless is_slot_empty?(index)
@@ -86,7 +95,7 @@ class Game
   end
 
   def no_of_turns_left
-    12 - no_of_turns_played
+    11 - no_of_turns_played
   end
 
   def no_of_turns_played
