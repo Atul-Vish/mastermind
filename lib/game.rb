@@ -15,7 +15,7 @@ class Game
 
   def play
     code = current_player.create_code
-    # p code
+    p code
     guess_no = 1
     while guess_no < 12
       switch_players!
@@ -37,30 +37,6 @@ class Game
 
     print_board
   end
-
-  # def play_one_set(no_of_tries)
-  #   counter = 0
-  #   while counter < no_of_tries - 1
-  #     play_one_exchange
-  #     counter += 1
-  #   end
-
-  #   print_message(lose_message)
-  # end
-
-  # # Extract the functionality in which I can pass a number to method as input
-  # # and I get that many tries to guess the code.
-  # def play_one_exchange
-  #   guess = current_player.guess_code
-  #   switch_players!
-  #   if has_player_won?(guess)
-  #     print_message(win_message)
-  #     return
-  #   else
-  #     current_player.print_feedback(guess)
-  #     switch_players!
-  #   end
-  # end
 
   def print_board
     board.each_with_index do |val, index|
@@ -127,13 +103,4 @@ class Game
     # Yes if he don't have any turns left and given he hasn't won yet, otherwise the game would've ended with a winning message
     no_of_turns_left == 0
   end
-
-  # def game_end_message(guess)
-  #   if has_player_won?(guess)
-  #     print_message(win_message)
-
-  #   elsif has_player_lost?
-  #     print_message(lose_message)
-  #   end
-  # end
 end
