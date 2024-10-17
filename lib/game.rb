@@ -13,14 +13,10 @@ class Game
     puts "#{current_player} goes first!!"
   end
 
-  # Problem : Play method is too long, I want to shorten it
-  # How will I do it?
-  # I will extract some functionality as 'methods' and make those methods private
-  # Then I'll call those methods in play method
   def play
     code = current_player.create_code
     # p code
-    guess_no = 0
+    guess_no = 1
     while guess_no < 12
       switch_players!
       guess = current_player.guess_code
@@ -30,15 +26,13 @@ class Game
       if has_player_won?(guess)
         print_message(win_message)
         break
+      elsif guess_no == 11
+        print_message(lose_message)
       end
 
       switch_players!
       current_player.print_feedback(guess, code)
       guess_no += 1
-    end
-
-    if guess_no == 11
-      print_message(lose_message)
     end
 
     print_board
@@ -94,7 +88,7 @@ class Game
   end
 
   def place_player_guess_on_board(guess, guess_no)
-    board[guess_no] = guess
+    board[guess_no - 1] = guess
   end
 
   def has_player_won?(player_guess)
@@ -114,14 +108,10 @@ class Game
     "You are out of tries!! Better luck next time. The code was #{code}"
   end
 
-  # Test Pass
   def no_of_turns_left
     12 - no_of_turns_played
   end
 
-  # Method to calculate no. of turns played (Test pass)
-  # It always return '0' because right now I'm not placing my guesses on board
-  # So it always return the 0 index as its nil
   def no_of_turns_played
     board.each_index do |slot_no|
       return slot_no if is_slot_empty?(slot_no)

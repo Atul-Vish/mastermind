@@ -135,7 +135,7 @@ class ComputerPlayer < Player
       p guess
       feedback1 = feedback_on_guess
       if feedback1 == [4, 0]
-        puts "You won the game in #{counter + 1} tries."
+        puts "You won the game in #{counter + 2} tries."
         break
       end
       sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
