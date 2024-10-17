@@ -19,13 +19,15 @@ class ComputerPlayer < Player
     red_pegs = array[0]
     white_pegs = array[1]
 
-    puts "\tRed pegs: #{red_pegs}"
-    puts "\tWhite pegs: #{white_pegs}"
-    puts ""
+    print_message("\tRed pegs: #{red_pegs}")
+    print_message("\tWhite pegs: #{white_pegs}")
+    print_message("------X-----------X-----------X-----------X-----------X------------X-------------X--------------X------------X------------X-------------X-----------X-----------X-----------X-----------X-----------X")
+    print_message("")
   end
 
   # Implement Minimax algorithm for Computer to make guesses
   def guess(player)
+    do_it_first
     initial_guess = select_initial_guess
     p initial_guess
     feedback = player.feedback_on_guess
@@ -37,16 +39,22 @@ class ComputerPlayer < Player
     while counter < 10
       score_array = score_array(sample_modified)
       guess =  guess_to_play_next(sample_modified, score_array)
-      puts ""
+      print_message("")
       p guess
       feedback1 = player.feedback_on_guess
       if feedback1 == [4, 0]
-        puts "#{self} won the game in #{counter + 2} tries."
+        print_message("#{self} won the game in #{counter + 2} tries.")
         break
       end
       sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
       counter += 1
     end
+  end
+
+  def do_it_first
+    print_message("Create a code with 4 Pegs (out of 6)")
+    print_message("Write this code on paper & Provide me feedback on my guesses.")
+    print_message("")
   end
 
   def to_s

@@ -17,12 +17,12 @@ class HumanPlayer < Player
   end
 
   def red_peg_feedback
-    puts "Red pegs: "
+    print_message("Red pegs: ")
     red_pegs = gets.chomp.to_i
   end
 
   def white_peg_feedback
-    puts "White Pegs: "
+    print_message("White Pegs: ")
     white_pegs = gets.chomp.to_i
   end
 

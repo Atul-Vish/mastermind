@@ -12,7 +12,6 @@ class Player
     print_message("")
 		print_message("If your guess is 'Red Blue Green Yellow' then your input should be '0 1 2 3' separated by spaces")
     print_message("")
-		print_message("------X-----------X-----------X-----------X-----------X------------X-------------X--------------X------------X------------X-------------X-----------X-----------X-----------X-----------X-----------X")
   end
 
   def available_options

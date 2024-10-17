@@ -4,9 +4,9 @@ class Game
 
   def initialize
     @players = [ComputerPlayer.new(self), HumanPlayer.new(self)]
-    @board = Array.new(12) { Array.new(4) }
+    @board = Array.new(11) { Array.new(4) }
     @code = Array.new(4)
-    @feedback = Array.new(12) { Array.new(2) }
+    @feedback = Array.new(11) { Array.new(2) }
     @current_player_id = 0
   end
 
@@ -27,6 +27,8 @@ class Game
 
     print "Enter your choice: "
     role = gets.chomp.to_i
+    print_message("")
+    role
   end
 
   def code_breaker
