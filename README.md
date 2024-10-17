@@ -15,3 +15,5 @@
 ---
 
 [Click to know about How to Play Mastermind](https://www.wikihow.com/Play-Mastermind)
+
+<video src="media/code_creator.mp4" width="320" height="240" controls></video>
