@@ -25,10 +25,10 @@ class ComputerPlayer < Player
   end
 
   # Implement Minimax algorithm for Computer to make guesses
-  def guess
+  def guess(player)
     initial_guess = select_initial_guess
     p initial_guess
-    feedback = feedback_on_guess
+    feedback = player.feedback_on_guess
     sample = create_set_of_all_possible_codes
 
     sample_modified = remove_codes_from_sample(initial_guess, feedback, sample)
@@ -37,30 +37,16 @@ class ComputerPlayer < Player
     while counter < 10
       score_array = score_array(sample_modified)
       guess =  guess_to_play_next(sample_modified, score_array)
+      puts ""
       p guess
-      feedback1 = feedback_on_guess
+      feedback1 = player.feedback_on_guess
       if feedback1 == [4, 0]
-        puts "You won the game in #{counter + 2} tries."
+        puts "#{self} won the game in #{counter + 2} tries."
         break
       end
       sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
       counter += 1
     end
-  end
-
-  # 3. Get feedback on your guess from HumanPlayer
-  def red_peg_feedback
-    puts "Red pegs: "
-    red_pegs = gets.chomp.to_i
-  end
-
-  def white_peg_feedback
-    puts "White Pegs: "
-    white_pegs = gets.chomp.to_i
-  end
-
-  def feedback_on_guess
-    [red_peg_feedback, white_peg_feedback]
   end
 
   def to_s
@@ -163,7 +149,7 @@ class ComputerPlayer < Player
     # 1. Iterate over set such that every element in set could be possible code
     modified_sample = Array.new
     sample.each do |possible_code|
-      feedback_on_possible_code = feedback(guess, possible_code)
+      feedback_on_possible_code = provide_feedback(guess, possible_code)
 
       modified_sample << possible_code if feedback_on_possible_code == feedback_on_guess
     end
@@ -194,7 +180,7 @@ class ComputerPlayer < Player
   def feedback_hash_for_score(guess, set)
     hash = Hash.new
     set.each do |possible_code|
-      feedback = feedback(guess, possible_code)
+      feedback = provide_feedback(guess, possible_code)
       # if possible_code == guess && set.size == 1
       #   hash[feedback] = 0
       # end

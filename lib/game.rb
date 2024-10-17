@@ -1,19 +1,35 @@
 # Creates a game board and lets HumanPlayer and ComputerPlayer play against each other
 class Game
-  attr_accessor :feedback, :code, :board
-  attr_reader :current_player_id
+  attr_accessor :feedback, :code, :board, :current_player_id
 
-  def initialize(player_1_class, player_2_class)
-    @players = [player_1_class.new(self), player_2_class.new(self)]
+  def initialize
+    @players = [ComputerPlayer.new(self), HumanPlayer.new(self)]
     @board = Array.new(12) { Array.new(4) }
     @code = Array.new(4)
     @feedback = Array.new(12) { Array.new(2) }
     @current_player_id = 0
-
-    puts "#{current_player} goes first!!"
   end
 
   def play
+    role = select_your_role
+    if role == 1
+      code_breaker
+    else
+      current_player.guess(opponent_player)
+    end
+  end
+
+  def select_your_role
+    print_message("Select your role: ")
+    print_message("1) Code Breaker")
+    print_message("2) Code Creator")
+    print_message("")
+
+    print "Enter your choice: "
+    role = gets.chomp.to_i
+  end
+
+  def code_breaker
     self.code = current_player.create_code
     p code
     guess_no = 1
@@ -27,25 +43,15 @@ class Game
       if has_player_won?(guess)
         print_message(win_message)
         break
-      elsif guess_no == 11
-        print_message(lose_message)
       end
 
       switch_players!
       current_player.print_feedback(guess, code)
+      print_message(lose_message) if no_of_turns_left.zero?
       guess_no += 1
     end
 
     print_board
-  end
-
-  def select_your_role
-    print_message("Select your role: ")
-    print_message("1) Code Breaker")
-    print_message("2) Code Creator")
-    print_message("")
-
-    role = gets.chomp.to_i
   end
 
   def print_board
@@ -91,7 +97,7 @@ class Game
   end
 
   def lose_message
-    "You are out of tries!! Better luck next time. The code was #{code}"
+    "You are out of tries!! Better luck next time. The code was #{code}\n\n"
   end
 
   def no_of_turns_left
