@@ -32,11 +32,13 @@ If you want to be the **code breaker** then press `1`. Provide the guess in the 
 
 To Play the mastermind : 
 1. [Go to this link](https://replit.com/@atulvishwakarm6/mastermind).
-2. `Click` the green **Run** button.
-3. You'll be prompted to choose between `code creator` or `code breaker`
-4. Enter `1` if you want to guess the **code** created by the `ComputerPlayer`
-5. Enter `2` if you want the `ComputerPlayer` to guess your secret **code**
-6. ***KEEP REPEATING AND HAVE FUN!!***
+2. `Click` on the green  **Fork** button in the top upper right corner.
+3. `Select` blue **Fork repl** button.
+4. Now `Click` the green **Run** button.
+5. You'll be prompted to choose between `code creator` or `code breaker`
+6. Enter `1` if you want to guess the **code** created by the `ComputerPlayer`
+7. Enter `2` if you want the `ComputerPlayer` to guess your secret **code**
+8. ***KEEP REPEATING AND HAVE FUN!!***
 
 ## Problems that I Faced
 
