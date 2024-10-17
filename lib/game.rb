@@ -14,7 +14,7 @@ class Game
   end
 
   def play
-    code = current_player.create_code
+    self.code = current_player.create_code
     p code
     guess_no = 1
     while guess_no < 12
@@ -22,6 +22,7 @@ class Game
       guess = current_player.guess_code
       place_player_guess_on_board(guess, guess_no)
       p guess
+      puts ""
 
       if has_player_won?(guess)
         print_message(win_message)

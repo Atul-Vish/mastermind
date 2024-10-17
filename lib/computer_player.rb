@@ -5,35 +5,82 @@ class ComputerPlayer < Player
   attr_accessor :game
 
   def create_code
-    # 1. Get the available choices of pegs
     avail_choices = pegs
-    # 2. Store the empty code array in 'code'
-    code = game.code
-    i = 0
-    # 3. Loop through pegs and for each iteration select a random value and assign it to the code[i]
-    while i < 4
-      random_peg = avail_choices.sample
-      code[i] = random_peg
-      i += 1
-    end
+    code = Array.new(4)
 
-    code
+    code.each_index do |index|
+      random_peg = avail_choices.sample
+      code[index] = random_peg
+    end
   end
 
-  # Provide feeback on your guess
-  def feedback(guess, code)
-    # 1. Calculate max_peg count for a peg
-    max_peg_hash = max_peg_count(guess, code)
-    # 2. Then calculate small_red_peg for this peg
-    small_red_peg_hash = small_red_peg(guess, code, max_peg_hash)
-    # 3. Subtract small_red_peg of a peg from max_peg_count
-    feedback_hash = small_white_peg(small_red_peg_hash)
-    # 4. Add all the individual small_white_peg count to get the total small_white_peg
-    total_red_peg = total_red_peg(feedback_hash)
-    # 5. Add all the individual small_red_peg count to get the total small_red_peg
-    total_white_peg = total_white_peg(feedback_hash)
+  def print_feedback(guess, code)
+    array = provide_feedback(guess, code)
+    red_pegs = array[0]
+    white_pegs = array[1]
 
-    [total_red_peg, total_white_peg]
+    puts "\tRed pegs: #{red_pegs}"
+    puts "\tWhite pegs: #{white_pegs}"
+    puts ""
+  end
+
+  # Implement Minimax algorithm for Computer to make guesses
+  def guess
+    initial_guess = select_initial_guess
+    p initial_guess
+    feedback = feedback_on_guess
+    sample = create_set_of_all_possible_codes
+
+    sample_modified = remove_codes_from_sample(initial_guess, feedback, sample)
+    # 10 more guesses for Computer
+    counter = 0
+    while counter < 10
+      score_array = score_array(sample_modified)
+      guess =  guess_to_play_next(sample_modified, score_array)
+      p guess
+      feedback1 = feedback_on_guess
+      if feedback1 == [4, 0]
+        puts "You won the game in #{counter + 2} tries."
+        break
+      end
+      sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
+      counter += 1
+    end
+  end
+
+  # 3. Get feedback on your guess from HumanPlayer
+  def red_peg_feedback
+    puts "Red pegs: "
+    red_pegs = gets.chomp.to_i
+  end
+
+  def white_peg_feedback
+    puts "White Pegs: "
+    white_pegs = gets.chomp.to_i
+  end
+
+  def feedback_on_guess
+    [red_peg_feedback, white_peg_feedback]
+  end
+
+  def to_s
+    'Computer Player'
+  end
+
+
+
+
+  # All Private methods are below
+  private
+
+  def provide_feedback(guess, code)
+    max_peg_hash = max_peg_count(guess, code)
+    small_red_peg_hash = small_red_peg(guess, code, max_peg_hash)
+    feedback_hash = small_white_peg(small_red_peg_hash)
+    feedback_red = total_red_peg(feedback_hash)
+    feedback_white = total_white_peg(feedback_hash)
+
+    [feedback_red, feedback_white]
   end
 
   # Calculate max_peg_count for a peg
@@ -59,9 +106,17 @@ class ComputerPlayer < Player
     feedback_hash
   end
 
+  # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
+  def convert_to_hash(array)
+    array.tally
+  end
+
+  # Creates nested hash with infinite depth
+  def create_nested_infinite_hash
+    Hash.new { |h, k| h[k] = h.dup.clear }
+  end
+
   def small_red_peg(guess, code, feedback_hash)
-    # Check corresponding peg in code and guess and if they are same THEN
-    #  increase the small_red_peg count for that peg by 1
     guess.each_with_index do |peg, index|
       feedback_hash[peg][:small_red_peg] += 1 if peg == code[index]
     end
@@ -95,77 +150,12 @@ class ComputerPlayer < Player
     tot_white_peg
   end
 
-  # Converts code = ["Red", "Blue", "Red", "Yellow"] to { "Red" => 2, "Blue" => 1, "Yellow" => 1}
-  def convert_to_hash(array)
-    array.tally
-  end
-
-  # Creates nested hash with infinite depth
-  def create_nested_infinite_hash
-    Hash.new { |h, k| h[k] = h.dup.clear }
-  end
-
-  def print_feedback(guess, code)
-    array = feedback(guess, code)
-    red_pegs = array[0]
-    white_pegs = array[1]
-
-    puts "\tRed pegs: #{red_pegs}"
-    puts "\tWhite pegs: #{white_pegs}"
-    puts ""
-  end
-
-  # Implement Minimax algorithm for Computer to make guesses
-  def guess
-    # 3. Get feedback on your initial guess
-    # 4. If the feedback is all colored pegs then algorithm terminates (let's skip this for now)
-    # 5. Iterate over sample, considering each sample[i] as code and play '1122' against it
-    #     If feedback you get is same as (3) then include it otherwise remove sample[i] from set
-    initial_guess = select_initial_guess
-    p initial_guess
-    feedback = feedback_on_guess
-    sample = create_set_of_all_possible_codes
-
-    sample_modified = remove_codes_from_sample(initial_guess, feedback, sample)
-    # 10 more guesses for Computer
-    counter = 0
-    while counter < 10
-      score_array = score_array(sample_modified)
-      guess =  guess_to_play_next(sample_modified, score_array)
-      p guess
-      feedback1 = feedback_on_guess
-      if feedback1 == [4, 0]
-        puts "You won the game in #{counter + 2} tries."
-        break
-      end
-      sample_modified = remove_codes_from_sample(guess, feedback1, sample_modified)
-      counter += 1
-    end
-  end
-
-  # 1, Create set 'S' of all possible 1296 codes
-  def create_set_of_all_possible_codes
-    pegs.repeated_permutation(4).to_a
-  end
-
-  # 2. Select initial guess 1122 eq to [Red Red Blue Blue]
   def select_initial_guess
     %w[Red Red Blue Blue]
   end
 
-  # 3. Get feedback on your guess from HumanPlayer
-  def red_peg_feedback
-    puts "Red pegs: "
-    red_pegs = gets.chomp.to_i
-  end
-
-  def white_peg_feedback
-    puts "White Pegs: "
-    white_pegs = gets.chomp.to_i
-  end
-
-  def feedback_on_guess
-    [red_peg_feedback, white_peg_feedback]
+  def create_set_of_all_possible_codes
+    pegs.repeated_permutation(4).to_a
   end
 
   # 5. Eliminating codes from sample that couldn't possibly be our answer (the real code) TEST PASS
@@ -179,6 +169,24 @@ class ComputerPlayer < Player
     end
 
     modified_sample
+  end
+
+  # Return the score array
+  def score_array(set)
+    score_array = Array.new(set.size)
+    set.each_with_index do |code, index|
+      feedback_hash = feedback_hash_for_score(code, set)
+      max_value = assign_max_value(feedback_hash)
+      score = set.size - max_value
+      score_array[index] = score
+    end
+
+    score_array
+  end
+
+  # 2. Assign score to the guess
+  def assign_max_value(hash)
+    hash.values.max
   end
 
   # 1. Consider the first code in modified_sample as guess and other codes as codes
@@ -201,32 +209,10 @@ class ComputerPlayer < Player
     hash
   end
 
-  # 2. Assign score to the guess
-  def assign_score(hash)
-    hash.values.max
-  end
-
-  # Return the score array
-  def score_array(set)
-    score_array = Array.new(set.size)
-    set.each_with_index do |code, index|
-      feedback_hash = feedback_hash_for_score(code, set)
-      max_value = feedback_hash.values.max
-      score = set.size - max_value
-      score_array[index] = score
-    end
-
-    score_array
-  end
-
   def guess_to_play_next(set, score_array)
     max_score = score_array.max
     index = score_array.find_index(max_score)
 
     set[index]
-  end
-
-  def to_s
-    'Computer'
   end
 end
