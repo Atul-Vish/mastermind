@@ -11,3 +11,7 @@
 9. `ComputerPlayer` will work under the assumption that you always provide correct feedback.
 10. `ComputerPlayer` will always win and will be able to guess the code in atmost 5 tries. Provided that the feedback you provide is correct.
 11. It uses **Knuth's** algorithm to guess it in atmost 5 tries. More details on the algortihm are [here](https://en.wikipedia.org/wiki/Mastermind_(board_game)#Best_strategies_with_four_holes_and_six_colors)
+
+---
+
+[Click to know about How to Play Mastermind](https://www.wikihow.com/Play-Mastermind)
