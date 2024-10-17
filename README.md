@@ -16,4 +16,4 @@
 
 [Click to know about How to Play Mastermind](https://www.wikihow.com/Play-Mastermind)
 
-![Code Creator]()
+![Code Creator](https://github.com/Atul-Vish/mastermind/blob/main/media/code_creator.gif)
