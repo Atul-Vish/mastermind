@@ -16,6 +16,19 @@ class HumanPlayer < Player
     end
   end
 
+  def feedback_on_guess
+    [red_peg_feedback, white_peg_feedback]
+  end
+
+  def to_s
+    'Human Player'
+  end
+
+
+
+  # All Private methods are below this line
+  private
+
   def take_guess
     guess = 0
     loop do
@@ -45,13 +58,5 @@ class HumanPlayer < Player
   def white_peg_feedback
     print_message("White Pegs: ")
     white_pegs = gets.chomp.to_i
-  end
-
-  def feedback_on_guess
-    [red_peg_feedback, white_peg_feedback]
-  end
-
-  def to_s
-    'Human Player'
   end
 end

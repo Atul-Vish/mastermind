@@ -1,3 +1,4 @@
+require 'pry-byebug'
 # Creates a game board and lets HumanPlayer and ComputerPlayer play against each other
 class Game
   attr_accessor :feedback, :code, :board, :current_player_id
@@ -11,24 +12,9 @@ class Game
   end
 
   def play
-    role = select_your_role
-    if role == 1
-      code_breaker
-    else
-      current_player.guess(opponent_player)
-    end
-  end
-
-  def select_your_role
-    print_message("Select your role: ")
-    print_message("1) Code Breaker")
-    print_message("2) Code Creator")
-    print_message("")
-
-    print "Enter your choice: "
-    role = gets.chomp.to_i
-    print_message("")
-    role
+    select_your_role
+    role = enter_correct_role
+    selected_role(role)
   end
 
   def code_breaker
@@ -40,7 +26,7 @@ class Game
       guess = current_player.guess_code
       place_player_guess_on_board(guess, guess_no)
       p guess
-      puts ""
+      one_line_space
 
       if has_player_won?(guess)
         print_message(win_message)
@@ -49,6 +35,7 @@ class Game
 
       switch_players!
       current_player.print_feedback(guess, code)
+      puts no_of_turns_left.to_s
       print_message(lose_message) if no_of_turns_left.zero?
       guess_no += 1
     end
@@ -58,12 +45,47 @@ class Game
 
   def print_board
     board.each_with_index do |val, index|
-      puts "Your guess #{index + 1} was: #{board[index]}" unless is_slot_empty?(index)
+      puts "#{index + 1}. Guess: #{board[index]}" unless is_slot_empty?(index)
     end
   end
 
-  # All private (implementation) methods are below this
+
+
+
+  # ALL PRIVATE (IMPLEMENTATION) METHODS ARE BELOW THIS LINE
   private
+
+  def select_your_role
+    print_message("Select your role: ")
+    print_message("1) Code Breaker")
+    print_message("2) Code Creator")
+    one_line_space
+  end
+
+  def enter_correct_role
+    loop do
+      print "Enter your choice: "
+      role = gets.chomp.to_i
+      if is_role_valid?(role)
+        return role
+      else
+        print_message("Incorrect input. Enter either 1 or 2.")
+        one_line_space
+      end
+    end
+  end
+
+  def is_role_valid?(role)
+    role == 1 || role == 2
+  end
+
+  def selected_role(role)
+    if role == 1
+      code_breaker
+    else
+      current_player.guess(opponent_player)
+    end
+  end
 
   def current_player
     @players[current_player_id]
@@ -103,6 +125,7 @@ class Game
   end
 
   def no_of_turns_left
+    # binding.pry
     11 - no_of_turns_played
   end
 
@@ -110,15 +133,23 @@ class Game
     board.each_index do |slot_no|
       return slot_no if is_slot_empty?(slot_no)
     end
+
+    unless is_slot_empty?(10)
+      11
+    end
   end
 
-  # Test Pass
   def is_slot_empty?(slot_no)
-    board[slot_no].all? { |peg| peg.nil? }
+    # board[slot_no].all? { |peg| peg.nil? }
+    board[slot_no].compact.empty?
   end
 
   def has_player_lost?
     # Yes if he don't have any turns left and given he hasn't won yet, otherwise the game would've ended with a winning message
     no_of_turns_left == 0
+  end
+
+  def one_line_space
+    puts ""
   end
 end

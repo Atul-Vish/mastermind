@@ -189,9 +189,6 @@ class ComputerPlayer < Player
     hash = Hash.new
     set.each do |possible_code|
       feedback = provide_feedback(guess, possible_code)
-      # if possible_code == guess && set.size == 1
-      #   hash[feedback] = 0
-      # end
 
       if hash.key?(feedback)
         hash[feedback] += 1
