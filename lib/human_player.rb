@@ -9,7 +9,7 @@ class HumanPlayer < Player
   def guess_code
     choose_color
     # "1 2 3 4" => [1, 2, 3, 4]
-    guess = gets.chomp.split.map { |val| val.to_i }
+    guess = gets.chomp.split('').map { |val| val.to_i }
     # [1, 2, 3, 4] => ["Red", "Blue", "Green", "Yellow"]
     guess.each_with_index do |integer, index|
       guess[index] = pegs[integer]
