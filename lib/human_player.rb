@@ -9,11 +9,34 @@ class HumanPlayer < Player
   def guess_code
     choose_color
     # "1 2 3 4" => [1, 2, 3, 4]
-    guess = gets.chomp.split('').map { |val| val.to_i }
+    guess = take_guess
+
+    guessed_pegs = guess.split('').map { |val| val.to_i }
     # [1, 2, 3, 4] => ["Red", "Blue", "Green", "Yellow"]
-    guess.each_with_index do |integer, index|
-      guess[index] = pegs[integer]
+    guessed_pegs.each_with_index do |integer, index|
+      guessed_pegs[index] = pegs[integer]
     end
+  end
+
+  def take_guess
+    guess = 0
+    loop do
+      guess = gets.chomp
+      if is_guess_valid?(guess)
+        return guess
+      else
+        error_message_for_invalid_guess(guess)
+      end
+    end
+  end
+
+  def is_guess_valid?(guess)
+    guess.length == 4
+  end
+
+  def error_message_for_invalid_guess(guess)
+    print_message("Your guess #{guess} is invalid. Please enter a valid guess of size 4 without any spaces in between.")
+    one_line_space
   end
 
   def red_peg_feedback

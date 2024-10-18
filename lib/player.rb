@@ -22,4 +22,8 @@ class Player
   def print_message(message)
     puts message
   end
+
+  def one_line_space
+    puts ""
+  end
 end
