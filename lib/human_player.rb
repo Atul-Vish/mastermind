@@ -42,7 +42,7 @@ class HumanPlayer < Player
 
   def is_guess_valid?(guess)
     guess_array = guess.split('')
-    guess_array.length == 4 && guess_array.all? { |value| value.to_i > 0 && value.to_i < 6 }
+    guess_array.length == 4 && guess_array.all? { |value| value.to_i >= 0 && value.to_i < 6 }
   end
 
   def error_message_for_invalid_guess(guess)
