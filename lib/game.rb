@@ -125,7 +125,6 @@ class Game
   end
 
   def no_of_turns_left
-    # binding.pry
     11 - no_of_turns_played
   end
 

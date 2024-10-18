@@ -42,7 +42,7 @@ class HumanPlayer < Player
   end
 
   def is_guess_valid?(guess)
-    guess.length == 4
+    guess.split('').compact.length == 4
   end
 
   def error_message_for_invalid_guess(guess)
