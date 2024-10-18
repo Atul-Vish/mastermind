@@ -18,7 +18,6 @@ class Game
 
   def code_breaker
     self.code = current_player.create_code
-    p code
     guess_no = 1
     while guess_no < 12
       switch_players!
