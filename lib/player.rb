@@ -9,9 +9,9 @@ class Player
 
   def choose_color
     available_options
-    print_message("")
+    one_line_space
 		print_message("If your guess is 'Red Blue Green Yellow' then your input should be '0123'.")
-    print_message("")
+    one_line_space
   end
 
   def available_options

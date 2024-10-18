@@ -22,7 +22,7 @@ class ComputerPlayer < Player
     print_message("\tRed pegs: #{red_pegs}")
     print_message("\tWhite pegs: #{white_pegs}")
     print_message("------X-----------X-----------X-----------X-----------X------------X-------------X--------------X------------X------------X-------------X-----------X-----------X-----------X-----------X-----------X")
-    print_message("")
+    one_line_space
   end
 
   # Implement Minimax algorithm for Computer to make guesses
@@ -54,7 +54,7 @@ class ComputerPlayer < Player
   def do_it_first
     print_message("Create a code with 4 Pegs (out of 6)")
     print_message("Write this code on paper & Provide me feedback on my guesses.")
-    print_message("")
+    one_line_space
   end
 
   def to_s

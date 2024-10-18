@@ -4,8 +4,6 @@ require_relative 'player'
 class HumanPlayer < Player
   attr_accessor :game
 
-  def feedback; end
-
   def guess_code
     choose_color
     # "1 2 3 4" => [1, 2, 3, 4]
