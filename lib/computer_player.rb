@@ -1,4 +1,3 @@
-require 'pry-byebug'
 require_relative 'player'
 # Creates ComputerPlayer to play against 'YOU'
 class ComputerPlayer < Player

@@ -1,4 +1,3 @@
-require 'pry-byebug'
 # Creates a game board and lets HumanPlayer and ComputerPlayer play against each other
 class Game
   attr_accessor :feedback, :code, :board, :current_player_id
@@ -35,7 +34,6 @@ class Game
 
       switch_players!
       current_player.print_feedback(guess, code)
-      puts no_of_turns_left.to_s
       print_message(lose_message) if no_of_turns_left.zero?
       guess_no += 1
     end
