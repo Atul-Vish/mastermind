@@ -8,7 +8,6 @@ class HumanPlayer < Player
     choose_color
     # "1 2 3 4" => [1, 2, 3, 4]
     guess = take_guess
-
     guessed_pegs = guess.split('').map { |val| val.to_i }
     # [1, 2, 3, 4] => ["Red", "Blue", "Green", "Yellow"]
     guessed_pegs.each_with_index do |integer, index|
@@ -42,7 +41,8 @@ class HumanPlayer < Player
   end
 
   def is_guess_valid?(guess)
-    guess.split('').compact.length == 4
+    guess_array = guess.split('')
+    guess_array.length == 4 && guess_array.all? { |value| value.to_i > 0 && value.to_i < 6 }
   end
 
   def error_message_for_invalid_guess(guess)
